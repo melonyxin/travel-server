@@ -6,7 +6,8 @@ var pool = mysql.createPool({
   port: '3306',
   user: "root", //需要用户的名字
   password: "990315", //用户密码 ，如果你没有密码，直接双引号就是
-  database: "travel" //数据库名字
+  database: "tourism_platform", //数据库名字
+  dateStrings:true
 });
 
 // 连接公用方法
