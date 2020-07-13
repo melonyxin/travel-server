@@ -2,6 +2,24 @@ var express = require('express');
 var router = express.Router();
 var query = require("../mysql");
 
+
+router.post('/get', function(req, res, next) {
+  account=req.body.account ;
+  let sql = "SELECT account,telephone FROM tourist WHERE "+
+            "account = '"+account+"'";
+  query(sql,(err,results)=>{
+    if(err) {
+      console.log(err);
+      res.json({result:false,tourist_info:null});
+    } else if(results.length === 0) {
+      res.json({result:false,tourist_info:null});
+    } else {
+      console.log(results);
+      res.json({result:true,tourist_info:results[0]});
+    }
+  })
+});
+
 router.post('/verify', function(req, res, next) {
   account=req.body.account ;
   pwd=req.body.password;

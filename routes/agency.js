@@ -2,10 +2,27 @@ var express = require('express');
 var router = express.Router();
 var query = require("../mysql");
 
+router.post('/get', function(req, res, next) {
+  account=req.body.account ;
+  let sql = "SELECT name,telephone,brief FROM agency WHERE "+
+            "account = '"+account+"'";
+  query(sql,(err,results)=>{
+    if(err) {
+      console.log(err);
+      res.json({result:false,agency_info:null});
+    } else if(results.length === 0) {
+      res.json({result:false,agency_info:null});
+    } else {
+      console.log(results);
+      res.json({result:true,agency_info:results[0]});
+    }
+  })
+});
+
 router.post('/verify', function(req, res, next) {
   account=req.body.account ;
   pwd=req.body.password;
-  let sql = "SELECT account,telephone FROM agency WHERE "+
+  let sql = "SELECT account,name,telephone,brief FROM agency WHERE "+
             "account = '"+account+"' and password='"+pwd+"'";
   query(sql,(err,results)=>{
     if(err) {
@@ -15,7 +32,7 @@ router.post('/verify', function(req, res, next) {
       res.json({result:false,user:null});
     } else {
       console.log(results);
-      results[0]['type']='tourist';
+      results[0]['type']='agency';
       res.json({result:true,user:results[0]});
     }
   })
